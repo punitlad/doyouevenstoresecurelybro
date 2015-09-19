@@ -15,11 +15,19 @@ import android.widget.EditText;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import static android.os.Build.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_DATA = "ctf.awayday.thoughtworks.doyouevenstoresecurelybro.MESSAGE";
+    public static final String EXTRA_DATA = "ctf.awayday.tw.MESSAGE";
+    public static final String CTF_FLAG_TAG = "ctf.awayday.tw.CTF_FLAG";
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final String FLAG_FOR_CTF = "The Flag is: way_to_leak_data_bro";
     private File logFile;
+    private static int entryNum = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +44,15 @@ public class MainActivity extends AppCompatActivity {
     @NonNull
     private File createLogFile() throws IOException {
         File sdcard = Environment.getExternalStorageDirectory();
-        File directory = new File(sdcard.getAbsolutePath() + "/doyouevenstoresecurelybro/");
+        File directory = new File(sdcard.getAbsolutePath() + "/doyouevenlogsecurelybro/");
         if (!directory.exists()) {
             if (directory.mkdirs()) {
-                Log.d("MainActivity", "did create successfully");
+                Log.i("MainActivity", "did create successfully");
             } else {
-                Log.d("MainActivity", "did not create successfully");
+                Log.i("MainActivity", "did not create successfully");
             }
+        } else {
+            Log.i("MainActivity", "directory already exists");
         }
         File logFile = new File(directory, "secure.log");
         if (!logFile.exists()) {
@@ -53,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_main, menu);
         return true;
@@ -61,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch(id) {
             case R.id.action_settings:
@@ -97,11 +103,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void writeToLog(String message, File logFile) throws IOException {
         FileOutputStream os = new FileOutputStream(logFile, true);
-        os.write(message.getBytes());
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        osw.append(makeLogCatMessage());
+        osw.append(LINE_SEPARATOR);
+        osw.append(makeLog(message));
+        osw.append(LINE_SEPARATOR);
+        osw.flush();
+        osw.close();
         os.close();
     }
 
-    public boolean isExternalStorageWritable() {
+    @NonNull
+    private String makeLogCatMessage() {
+        Log.i(CTF_FLAG_TAG, FLAG_FOR_CTF);
+        return "Sent Message to LOGCAT";
+    }
+
+    private String makeLog(String message) {
+        entryNum++;
+        String fullMessage =
+                "DEVICE NAME: " + DEVICE + " " +
+                        "VERSION: " + VERSION.RELEASE + " " +
+                        "NO:" + entryNum + " " +
+                        "MESSAGE: " + message;
+        return fullMessage;
+    }
+
+    private boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
