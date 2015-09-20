@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ctf.awayday.thoughtworks.doyouevenstoresecurelybro"
+    package="ctf.awayday.thoughtworks.logmymessages"
     android:installLocation="preferExternal"
     >
     <application
@@ -23,7 +23,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ctf.awayday.thoughtworks.doyouevenstoresecurelybro.MainActivity" />
+                android:value="ctf.awayday.thoughtworks.logmymessages.MainActivity" />
         </activity>
     </application>
 

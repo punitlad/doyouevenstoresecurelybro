@@ -1,4 +1,4 @@
-package ctf.awayday.thoughtworks.doyouevenstoresecurelybro;
+package ctf.awayday.thoughtworks.logmymessages;
 
 import android.content.Intent;
 import android.os.Environment;
@@ -18,16 +18,17 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import static android.os.Build.*;
+import static ctf.awayday.thoughtworks.logmymessages.LogcatTags.*;
+import static ctf.awayday.thoughtworks.logmymessages.LogcatTags.EXTRA_DATA;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_DATA = "ctf.awayday.tw.MESSAGE";
-    public static final String CTF_FLAG_TAG = "ctf.awayday.tw.CTF_FLAG";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-    private static final String FLAG_FOR_CTF = "The Flag is: way_to_leak_data_bro";
-    private File logFile;
-    private static int entryNum = 0;
+    private static final String FLAG_FOR_CTF = "The Flag is: " + "way_to_leak_data_bro";
+    private static final String APP_DIRECTORY = "/logmymessages/";
 
+    private static int entryNum = 0;
+    private File logFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +38,22 @@ public class MainActivity extends AppCompatActivity {
         try {
             logFile = createLogFile();
         } catch (IOException e) {
-            Log.d("MainActivity", "Cannot Create Log File");
+            Log.d(MAIN_ACTIVITY, "Cannot create log file");
         }
     }
 
     @NonNull
     private File createLogFile() throws IOException {
         File sdcard = Environment.getExternalStorageDirectory();
-        File directory = new File(sdcard.getAbsolutePath() + "/doyouevenlogsecurelybro/");
+        File directory = new File(sdcard.getAbsolutePath() + APP_DIRECTORY);
         if (!directory.exists()) {
             if (directory.mkdirs()) {
-                Log.i("MainActivity", "did create successfully");
+                Log.i(MAIN_ACTIVITY, "did create successfully");
             } else {
-                Log.i("MainActivity", "did not create successfully");
+                Log.i(MAIN_ACTIVITY, "did not create successfully");
             }
         } else {
-            Log.i("MainActivity", "directory already exists");
+            Log.i(MAIN_ACTIVITY, "directory already exists");
         }
         File logFile = new File(directory, "secure.log");
         if (!logFile.exists()) {
@@ -66,26 +67,6 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch(id) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_search:
-                openSearch();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void openSearch() {
-        Intent displayMessageIntent = new Intent(this, DisplayMessageActivity.class);
-        displayMessageIntent.putExtra(EXTRA_DATA, "search");
-        startActivity(displayMessageIntent);
     }
 
     public void sendMessage(View view) throws IOException {
@@ -116,16 +97,15 @@ public class MainActivity extends AppCompatActivity {
     @NonNull
     private String makeLogCatMessage() {
         Log.i(CTF_FLAG_TAG, FLAG_FOR_CTF);
-        return "Sent Message to LOGCAT";
+        return "Logging Tag -" + CTF_FLAG_TAG;
     }
 
     private String makeLog(String message) {
         entryNum++;
-        String fullMessage =
-                "DEVICE NAME: " + DEVICE + " " +
-                        "VERSION: " + VERSION.RELEASE + " " +
-                        "NO:" + entryNum + " " +
-                        "MESSAGE: " + message;
+        String fullMessage = "DEVICE NAME: " + DEVICE + " " +
+                "VERSION: " + VERSION.RELEASE + " " +
+                "NO:" + entryNum + " " +
+                "MESSAGE: " + message;
         return fullMessage;
     }
 

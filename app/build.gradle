@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "ctf.awayday.thoughtworks.doyouevenstoresecurelybro"
+        applicationId "ctf.awayday.thoughtworks.logmymessages"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

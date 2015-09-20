@@ -1,11 +1,12 @@
-package ctf.awayday.thoughtworks.doyouevenstoresecurelybro;
+package ctf.awayday.thoughtworks.logmymessages;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import static ctf.awayday.thoughtworks.logmymessages.LogcatTags.EXTRA_DATA;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 
@@ -15,22 +16,10 @@ public class DisplayMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_message);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_DATA);
+        String message = intent.getStringExtra(EXTRA_DATA);
 
         TextView textView = new TextView(this);
         textView.setTextSize(40);
         textView.setText(message);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

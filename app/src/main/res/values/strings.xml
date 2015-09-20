@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">DoYouEvenStoreSecurelyBro</string>
+    <string name="app_name">Log My Messages</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="thanks_message">Thanks. Logging your message now!</string>
     <string name="action_settings">Settings</string>
     <string name="edit_message">Enter A Message To Log</string>
     <string name="button_send">Enter</string>
